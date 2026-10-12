@@ -1,0 +1,301 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SwapNest | Discover Pre-Loved Treasures</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body class="swapnest-home">
+
+    <!-- Navigation -->
+    <nav class="sn-navbar">
+        <a href="{{ url_for('home') }}" class="sn-logo">
+            <span class="sn-logo-icon">S</span>
+            SwapNest<span class="sn-logo-dot">.</span>
+        </a>
+
+        <div class="sn-nav-links">
+            <a class="sn-nav-active" href="{{ url_for('home') }}">Home</a>
+            <a href="{{ url_for('image_search') }}">Image Search</a>
+            <a href="{{ url_for('price_estimator') }}">Price Estimator</a>
+            <a href="{{ url_for('wishlist') }}">♡ Wishlist</a>
+            <a href="{{ url_for('account') }}">My Account</a>
+            <a href="{{ url_for('logout') }}">Logout</a>
+            <a href="{{ url_for('seller_dashboard') }}">Seller Dashboard</a>
+        </div>
+
+        <a class="sn-add-btn" href="{{ url_for('add_product') }}">
+            + Add Product
+        </a>
+    </nav>
+
+    <main>
+
+        <!-- Hero Section -->
+        <section class="sn-hero">
+            <div class="sn-hero-content">
+                <span class="sn-eyebrow">♻ BUY BETTER. REUSE MORE.</span>
+
+                <h1>
+                    Find treasures.<br>
+                    Give things a <span>second life.</span>
+                </h1>
+
+                <p>
+                    Discover affordable pre-loved items and give the things
+                    you no longer need a new home.
+                </p>
+
+                <div class="sn-hero-actions">
+                    <a class="sn-primary-btn" href="#marketplace">
+                        Explore Products ↓
+                    </a>
+
+                    <a class="sn-secondary-btn"
+                       href="{{ url_for('add_product') }}">
+                        List Your Treasure +
+                    </a>
+                </div>
+            </div>
+
+            <div class="sn-hero-art">
+                <div class="sn-art-circle">
+                    <span class="sn-art-emoji">♻</span>
+                </div>
+
+                <div class="sn-art-note">
+                    <span>🌱</span>
+                    <div>
+                        <strong>Reuse. Relove. Repeat.</strong>
+                        <small>Every item deserves another story.</small>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Flash Messages -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <div class="sn-flashes">
+                    {% for category, message in messages %}
+                        <p class="sn-flash">{{ message }}</p>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
+
+        <!-- Marketplace -->
+        <section class="sn-marketplace" id="marketplace">
+        
+<!-- Search, Category Filter and Sorting -->
+<form method="GET" action="{{ url_for('home') }}"
+      class="sn-filter-form" id="product-filters">
+
+    <div class="sn-search-box">
+        <input
+            type="search"
+            name="search"
+            placeholder="Search books, mobiles, laptops..."
+            value="{{ search_query }}"
+            aria-label="Search products">
+        <button type="submit">Search</button>
+    </div>
+
+    <div class="sn-filter-controls">
+
+        <select name="category" aria-label="Filter by category">
+            <option value="">All Categories</option>
+
+            {% for category in categories %}
+                <option
+                    value="{{ category.id }}"
+                    {% if selected_category|string == category.id|string %}
+                        selected
+                    {% endif %}>
+                    {{ category.name }}
+                </option>
+            {% endfor %}
+        </select>
+
+        <select name="sort" aria-label="Sort products">
+            <option value="newest"
+                {% if sort_by == "newest" %}selected{% endif %}>
+                Newest First
+            </option>
+
+            <option value="price_low"
+                {% if sort_by == "price_low" %}selected{% endif %}>
+                Price: Low to High
+            </option>
+
+            <option value="price_high"
+                {% if sort_by == "price_high" %}selected{% endif %}>
+                Price: High to Low
+            </option>
+        </select>
+
+        <button type="submit">Apply Filters</button>
+
+        <a href="{{ url_for('home') }}" class="sn-clear-filters">
+            Clear
+        </a>
+
+    </div>
+</form>
+
+            <div class="sn-section-heading">
+                <div>
+                    <span class="sn-eyebrow">THE COMMUNITY MARKETPLACE</span>
+                    <h2>Discover your next <span>favourite.</span></h2>
+                    <p>Good finds, fair prices, and a little less waste.</p>
+                </div>
+
+                <span class="sn-count">
+                    {{ products|length }}
+                    listing{% if products|length != 1 %}s{% endif %}
+                </span>
+            </div>
+
+            {% if products %}
+
+                <div class="sn-product-grid">
+
+                    {% for product in products %}
+
+                        <article class="sn-product-card">
+
+                            <!-- Product Image -->
+                            <div class="sn-product-image">
+
+                                {% if product.image_filename %}
+                                    <img
+                                        src="{{ url_for('product_image', filename=product.image_filename) }}"
+                                        alt="{{ product.name }}"
+                                        loading="lazy">
+                                {% else %}
+                                    <div class="sn-no-image">
+                                        <span>♻</span>
+                                        <p>Pre-loved treasure</p>
+                                    </div>
+                                {% endif %}
+
+                                <span class="sn-condition">
+                                    {{ product.condition }}
+                                </span>
+                            </div>
+
+                            <!-- Product Information -->
+                            <div class="sn-product-info">
+
+                                <p class="sn-category">
+                                    {{ product.category.name }}
+                                </p>
+
+                                <h3>{{ product.name }}</h3>
+
+                                {% if product.description %}
+                                    <p class="sn-description">
+                                        {{ product.description }}
+                                    </p>
+                                {% endif %}
+
+                                <!-- Price -->
+                                <div class="sn-price-row">
+                                    <strong>
+                                        ₹{{ "%.0f"|format(product.price) }}
+                                    </strong>
+
+                                    {% if product.original_price and product.original_price > product.price %}
+                                        <del>
+                                            ₹{{ "%.0f"|format(product.original_price) }}
+                                        </del>
+                                    {% endif %}
+                                </div>
+
+                                <!-- View Details -->
+                                <a
+                                    class="sn-view-btn"
+                                    href="{{ url_for('product_details', product_id=product.id) }}">
+                                    View Details →
+                                </a>
+
+                                <!-- Wishlist Button -->
+                                <form
+                                    method="POST"
+                                    action="{{ url_for('add_to_wishlist', product_id=product.id) }}"
+                                    class="sn-wishlist-form">
+
+                                    <button
+                                        type="submit"
+                                        class="sn-wishlist-btn {% if product.id in saved_product_ids %}sn-wishlist-saved{% endif %}">
+
+                                        {% if product.id in saved_product_ids %}
+                                            ♥ Saved to Wishlist
+                                        {% else %}
+                                            ♡ Add to Wishlist
+                                        {% endif %}
+
+                                    </button>
+                                </form>
+
+                            </div>
+                        </article>
+
+                    {% endfor %}
+
+                </div>
+
+            {% else %}
+
+                <!-- Empty Marketplace -->
+                <div class="sn-empty-state">
+                    <div class="sn-empty-icon">📦</div>
+
+                    <h3>Your next treasure starts here!</h3>
+
+                    <p>
+                        No available listings yet. Be the first to add
+                        something to SwapNest.
+                    </p>
+
+                    <a class="sn-primary-btn"
+                       href="{{ url_for('add_product') }}">
+                        + Add the First Product
+                    </a>
+                </div>
+
+            {% endif %}
+
+        </section>
+
+        <!-- Bottom Banner -->
+        <section class="sn-bottom-banner">
+            <div>
+                <span class="sn-eyebrow">HAVE SOMETHING TO SHARE?</span>
+                <h2>Make space. Create value.</h2>
+                <p>
+                    Your unused items might be someone else's perfect find.
+                </p>
+            </div>
+
+            <a class="sn-primary-btn" href="{{ url_for('add_product') }}">
+                List Your Treasure →
+            </a>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="sn-footer">
+        <a href="{{ url_for('home') }}" class="sn-logo">
+            SwapNest<span class="sn-logo-dot">.</span>
+        </a>
+
+        <p>A new home for things you no longer need. ♻</p>
+    </footer>
+
+</body>
+</html>

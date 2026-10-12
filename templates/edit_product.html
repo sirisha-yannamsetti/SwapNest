@@ -1,0 +1,71 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Product - SwapNest</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <style>
+        .form-container { max-width: 600px; margin: 35px auto; padding: 25px; }
+        label { display: block; margin-top: 15px; font-weight: bold; }
+        input, select, textarea { box-sizing: border-box; width: 100%; padding: 10px; margin-top: 6px; }
+        button { margin-top: 20px; padding: 12px 18px; cursor: pointer; }
+        img { width: 180px; max-height: 180px; object-fit: contain; }
+    </style>
+</head>
+<body>
+<div class="form-container">
+    <h1>Edit Product</h1>
+
+    <form method="POST" enctype="multipart/form-data">
+        <label>Product Name</label>
+        <input type="text" name="name" value="{{ product.name }}" required>
+
+        <label>Category</label>
+        <select name="category_id" required>
+            {% for category in categories %}
+            <option value="{{ category.id }}"
+                {% if category.id == product.category_id %}selected{% endif %}>
+                {{ category.name }}
+            </option>
+            {% endfor %}
+        </select>
+
+        <label>Original Price (₹)</label>
+        <input type="number" name="original_price" min="0.01" step="0.01"
+               value="{{ product.original_price or '' }}" required>
+
+        <label>Selling Price (₹)</label>
+        <input type="number" name="price" min="0.01" step="0.01"
+               value="{{ product.price }}" required>
+
+        <label>Condition</label>
+        <select name="condition" required>
+            {% for value in ['new', 'like new', 'good', 'fair', 'used'] %}
+            <option value="{{ value }}"
+                {% if product.condition|lower == value %}selected{% endif %}>
+                {{ value|title }}
+            </option>
+            {% endfor %}
+        </select>
+
+        <label>Description</label>
+        <textarea name="description" rows="5" required>{{ product.description or '' }}</textarea>
+
+        {% if product.image_filename %}
+        <label>Current Image</label>
+        <img src="{{ url_for('product_image', filename=product.image_filename) }}"
+             alt="{{ product.name }}">
+        {% endif %}
+
+        <label>Change Image (optional)</label>
+        <input type="file" name="product_image" accept=".jpg,.jpeg,.png,.webp">
+
+        <button type="submit">Save Changes</button>
+    </form>
+
+    <p><a href="{{ url_for('seller_dashboard') }}">Back to Dashboard</a></p>
+</div>
+</body>
+</html>

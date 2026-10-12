@@ -1,0 +1,78 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Account - SwapNest</title>
+
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #e8f8f5;
+            color: #2c3e50;
+        }
+
+        header {
+            background: #16a085;
+            color: white;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .account-card {
+            max-width: 450px;
+            margin: 45px auto;
+            padding: 30px;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .account-card h2 {
+            text-align: center;
+            color: #16a085;
+        }
+
+        .account-card p {
+            padding: 12px;
+            background: #f4f7f6;
+            border-radius: 8px;
+            overflow-wrap: anywhere;
+        }
+
+        .account-card a {
+            display: block;
+            text-align: center;
+            text-decoration: none;
+            padding: 12px;
+            margin-top: 15px;
+            border-radius: 8px;
+            background: #16a085;
+            color: white;
+        }
+
+        .account-card a:hover {
+            background: #13856e;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <h1>🛍️ SwapNest</h1>
+        <p>My Account</p>
+    </header>
+
+    <main class="account-card">
+        <h2>Welcome, {{ user.username }}! 💚</h2>
+
+        <p><strong>Username:</strong> {{ user.username }}</p>
+        <p><strong>Email:</strong> {{ user.email }}</p>
+
+        <a href="{{ url_for('home') }}">Go to Marketplace</a>
+        <a href="{{ url_for('logout') }}">Logout</a>
+    </main>
+</body>
+</html>

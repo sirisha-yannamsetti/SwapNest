@@ -1,0 +1,135 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ product.name }} - SwapNest</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+
+    <style>
+        .seller-contact {
+            margin-top: 25px;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 12px;
+            background: #f8fafc;
+        }
+
+        .contact-btn {
+            display: inline-block;
+            padding: 12px 20px;
+            margin: 8px 8px 8px 0;
+            border: none;
+            border-radius: 6px;
+            background: #2563eb;
+            color: white;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .contact-btn:hover {
+            background: #1d4ed8;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <h1>SwapNest</h1>
+        <p>Give pre-loved products a new home!</p>
+    </header>
+
+    <main>
+        <section class="product-details">
+
+            <h2>{{ product.name }}</h2>
+
+            <h3>Price: ₹{{ "{:,}".format(product.price) }}</h3>
+
+            <p>
+                <strong>Category:</strong>
+                {{ product.category }}
+            </p>
+
+            <p>
+                <strong>Condition:</strong>
+                {{ product.condition }}
+            </p>
+
+            <p>
+                <strong>Description:</strong>
+                {{ product.description }}
+            </p>
+
+            <hr>
+
+            <section class="seller-contact">
+                <h3>Seller Contact Details</h3>
+
+                {% if product.seller %}
+                    <p>
+                        <strong>Seller Name:</strong>
+                        {{ product.seller.username }}
+                    </p>
+
+                    {% if product.seller.phone %}
+                        <p>
+                            <strong>Phone:</strong>
+                            {{ product.seller.phone }}
+                        </p>
+
+                        <a class="contact-btn"
+                           href="tel:{{ product.seller.phone }}">
+                            Call Seller
+                        </a>
+                    {% else %}
+                        <p>Seller has not added a phone number yet.</p>
+                    {% endif %}
+
+                    {% if session.get('user_id') %}
+                        {% if session.get('user_id') != product.seller_id %}
+                            <a class="contact-btn"
+                               href="{{ url_for(
+                                   'message_thread',
+                                   product_id=product.id,
+                                   other_user_id=product.seller_id
+                               ) }}">
+                                Send Message
+                            </a>
+                        {% else %}
+                            <p>This is your product listing.</p>
+                        {% endif %}
+                    {% else %}
+                        <p>
+                            <a href="{{ url_for('login') }}">
+                                Log in
+                            </a>
+                            to contact the seller.
+                        </p>
+                    {% endif %}
+
+                {% else %}
+                    <p>Seller details are currently unavailable.</p>
+                {% endif %}
+            </section>
+
+            <a class="back-link" href="{{ url_for('home') }}">
+                ← Back to Home
+            </a>
+
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2026 SwapNest. All rights reserved.</p>
+    </footer>
+</body>
+</html>

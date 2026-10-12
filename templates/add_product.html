@@ -1,0 +1,141 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>List Your Treasure | SwapNest</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body class="listing-page">
+
+    <nav class="listing-nav">
+        <a href="{{ url_for('home') }}" class="brand">
+            <span class="brand-icon">S</span>
+            SwapNest<span class="brand-dot">.</span>
+        </a>
+        <a href="{{ url_for('home') }}" class="nav-home">← Back to Home</a>
+    </nav>
+
+    <main class="listing-wrapper">
+        <section class="listing-intro">
+            <span class="eyebrow">♻ GIVE YOUR ITEMS A SECOND LIFE</span>
+            <h1>One person's old<br>is another's <span>treasure.</span></h1>
+            <p>List what you no longer need. Help someone find what they love.</p>
+            <div class="listing-points">
+                <span>✓ Simple listing</span>
+                <span>✓ Reuse more</span>
+                <span>✓ Waste less</span>
+            </div>
+        </section>
+
+        <section class="listing-card">
+            <div class="card-heading">
+                <div>
+                    <h2>List your treasure</h2>
+                    <p>Tell the SwapNest community about your item.</p>
+                </div>
+                <div class="card-icon">＋</div>
+            </div>
+
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                        <div class="listing-message">{{ message }}</div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+
+            <form method="POST"
+                  action="{{ url_for('add_product') }}"
+                  enctype="multipart/form-data">
+
+                <div class="form-grid">
+                    <div class="form-field">
+                        <label for="name">Product name *</label>
+                        <input id="name" type="text" name="name"
+                               placeholder="e.g. Engineering textbooks" required>
+                    </div>
+
+                    <div class="form-field">
+                        <label for="category_id">Choose category *</label>
+                        <select id="category_id" name="category_id" required>
+                            <option value="">Select a category</option>
+                            {% for category in categories %}
+                                <option value="{{ category.id }}">{{ category.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <div class="form-field">
+                        <label for="original_price">Original price (₹) *</label>
+                        <input id="original_price" type="number"
+                               name="original_price" min="1" step="0.01"
+                               placeholder="e.g. 2000" required>
+                    </div>
+
+                    <div class="form-field">
+                        <label for="price">Your selling price (₹) *</label>
+                        <input id="price" type="number" name="price"
+                               min="1" step="0.01" placeholder="e.g. 800" required>
+                    </div>
+
+                    <div class="form-field">
+                        <label for="age_years">Product age (years) *</label>
+                        <input id="age_years" type="number" name="age_years"
+                               min="0" step="1" value="0" required>
+                    </div>
+
+                    <div class="form-field">
+                        <label for="condition">Item condition *</label>
+                        <select id="condition" name="condition" required>
+                            <option value="">Choose condition</option>
+                            <option value="Like New">Like New</option>
+                            <option value="Very Good">Very Good</option>
+                            <option value="Good">Good</option>
+                            <option value="Fair">Fair</option>
+                        </select>
+                    </div>
+
+                    <div class="form-field full-width">
+                        <label for="description">Product story *</label>
+                        <textarea id="description" name="description" rows="4"
+                                  placeholder="Describe the item, its condition and anything a buyer should know..."
+                                  required></textarea>
+                    </div>
+
+                    <div class="form-field full-width">
+                        <label for="product_image">Product photo *</label>
+                        <div class="upload-area">
+                            <span class="upload-symbol">↑</span>
+                            <strong>Choose a photo of your item</strong>
+                            <p>JPG, JPEG, PNG or WEBP</p>
+                            <input id="product_image" type="file"
+                                   name="product_image"
+                                   accept=".jpg,.jpeg,.png,.webp"
+                                   required>
+                            <p id="file-name">No photo selected yet</p>
+                        </div>
+                    </div>
+                </div>
+
+                <button type="submit" class="publish-button">
+                    ＋ Publish My Treasure
+                </button>
+                <p class="form-note">♻ Every reused item is a step toward less waste.</p>
+            </form>
+        </section>
+    </main>
+
+    <script>
+        const imageInput = document.getElementById("product_image");
+        const fileName = document.getElementById("file-name");
+
+        imageInput.addEventListener("change", function () {
+            fileName.textContent = this.files.length
+                ? "Selected: " + this.files[0].name
+                : "No photo selected yet";
+        });
+    </script>
+</body>
+</html>

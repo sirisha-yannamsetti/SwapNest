@@ -1,0 +1,101 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Account - SwapNest</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <style>
+        .register-container {
+            max-width: 420px;
+            margin: 40px auto;
+            padding: 30px;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .register-container h2 {
+            text-align: center;
+            color: #16a085;
+            margin-bottom: 25px;
+        }
+
+        .register-container label {
+            display: block;
+            margin-top: 15px;
+            font-weight: bold;
+        }
+
+        .register-container input {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 12px;
+            margin-top: 7px;
+            border: 1px solid #ccc;
+            border-radius: 7px;
+        }
+
+        .register-container button {
+            width: 100%;
+            padding: 12px;
+            margin-top: 22px;
+            background: #16a085;
+            color: white;
+            border: none;
+            border-radius: 7px;
+            cursor: pointer;
+        }
+
+        .register-container button:hover {
+            background: #13856e;
+        }
+
+        .register-container p {
+            text-align: center;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>SwapNest</h1>
+        <p>Give pre-loved products a new home!</p>
+    </header>
+
+    <main>
+        <div class="register-container">
+            <h2>Create Your Account</h2>
+            {% with messages = get_flashed_messages(with_categories=true) %}
+    {% for category, message in messages %}
+        <p>{{ message }}</p>
+    {% endfor %}
+{% endwith %}
+
+            <form action="/register" method="POST">
+                <label for="username">Username</label>
+                <input type="text" id="username" name="username"
+                       placeholder="Enter your username" required>
+
+                <label for="email">Email Address</label>
+                <input type="email" id="email" name="email"
+                       placeholder="Enter your email" required>
+
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password"
+                       placeholder="Create a password" minlength="8" required>
+
+                <button type="submit">Create Account</button>
+            </form>
+
+            <p>Already have an account? <a href="/login">Login</a></p>
+            <p><a href="/">← Back to Home</a></p>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2026 SwapNest. All rights reserved.</p>
+    </footer>
+</body>
+</html>

@@ -1,0 +1,127 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome to SwapNest</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #e8f8f5, #ffffff);
+            color: #2c3e50;
+        }
+
+        header {
+            background: #16a085;
+            color: white;
+            padding: 22px;
+            text-align: center;
+        }
+
+        .welcome-container {
+            min-height: 75vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 30px 20px;
+        }
+
+        .welcome-container h2 {
+            font-size: 42px;
+            margin-bottom: 12px;
+        }
+
+        .welcome-container p {
+            font-size: 18px;
+            line-height: 1.7;
+            max-width: 600px;
+        }
+
+        .welcome-buttons {
+            display: flex;
+            gap: 16px;
+            margin-top: 25px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .welcome-buttons a {
+            padding: 14px 32px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 16px;
+        }
+
+        .register-btn {
+            background: #16a085;
+            color: white;
+        }
+
+        .login-btn {
+            border: 2px solid #16a085;
+            color: #13856e;
+            background: white;
+        }
+
+        .welcome-buttons a:hover {
+            opacity: 0.85;
+            transform: translateY(-2px);
+        }
+
+        footer {
+            text-align: center;
+            padding: 18px;
+            color: #555;
+        }
+
+        @media (max-width: 600px) {
+            .welcome-container h2 {
+                font-size: 32px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <h1>🛍️ SwapNest</h1>
+        <p>Give pre-loved products a new home!</p>
+    </header>
+
+    <main class="welcome-container">
+        <h2>Welcome to SwapNest! 💚</h2>
+
+        <p>
+            Buy, sell, and exchange pre-loved products easily.
+            Discover affordable books, mobiles, laptops, bicycles,
+            and more—all in one place.
+        </p>
+
+        <p>Join our community and give your unused items a new life!</p>
+
+        <div class="welcome-buttons">
+            <a href="{{ url_for('register') }}" class="register-btn">
+                Create Account
+            </a>
+
+            <a href="{{ url_for('login') }}" class="login-btn">
+                Login
+            </a>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2026 SwapNest. All rights reserved.</p>
+    </footer>
+</body>
+</html>

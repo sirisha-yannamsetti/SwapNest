@@ -1,0 +1,108 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - SwapNest</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+
+    <style>
+        .login-container {
+            max-width: 420px;
+            margin: 40px auto;
+            padding: 30px;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .login-container h2 {
+            text-align: center;
+            color: #16a085;
+        }
+
+        .login-container label {
+            display: block;
+            margin-top: 18px;
+            font-weight: bold;
+        }
+
+        .login-container input {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 12px;
+            margin-top: 7px;
+            border: 1px solid #ccc;
+            border-radius: 7px;
+        }
+
+        .login-container button {
+            width: 100%;
+            padding: 12px;
+            margin-top: 22px;
+            background: #16a085;
+            color: white;
+            border: none;
+            border-radius: 7px;
+            cursor: pointer;
+        }
+
+        .login-container button:hover {
+            background: #13856e;
+        }
+
+        .login-container p {
+            text-align: center;
+            margin-top: 18px;
+        }
+
+        .login-message {
+            color: #c0392b;
+        }
+
+        .success-message {
+            color: #13856e;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>SwapNest</h1>
+        <p>Give pre-loved products a new home!</p>
+    </header>
+
+    <main>
+        <div class="login-container">
+            <h2>Welcome Back!</h2>
+
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% for category, message in messages %}
+                    <p class="{% if category == 'success' %}success-message{% else %}login-message{% endif %}">
+                        {{ message }}
+                    </p>
+                {% endfor %}
+            {% endwith %}
+
+            <form action="{{ url_for('login') }}" method="POST">
+                <label for="email">Email Address</label>
+                <input type="email" id="email" name="email"
+                       placeholder="Enter your email" required>
+
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password"
+                       placeholder="Enter your password" required>
+
+                <button type="submit">Login</button>
+            </form>
+
+            <p>Don't have an account? <a href="{{ url_for('register') }}">Register</a></p>
+            <p><a href="{{ url_for('home') }}">← Back to Home</a></p>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2026 SwapNest. All rights reserved.</p>
+    </footer>
+</body>
+</html>
